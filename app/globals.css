@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   LaundroGrid design tokens
+   One accent (signal amber), used sparingly. Dark hero, light body.
+   ------------------------------------------------------------------ */
+@theme {
+  /* Dark surfaces — hero and final CTA */
+  --color-ink-950: #08080a;
+  --color-ink-900: #0e0e11;
+  --color-ink-800: #17171b;
+  --color-ink-700: #26262c;
+
+  /* Light surfaces — everything between */
+  --color-paper: #fafaf9;
+  --color-paper-alt: #f3f2f0;
+
+  /* Text */
+  --color-graphite-900: #17171b;
+  --color-graphite-700: #3f3f46;
+  --color-graphite-600: #57575f;
+  --color-graphite-400: #a1a1aa;
+
+  /* Hairlines */
+  --color-line: #e3e1de;
+  --color-line-dark: #26262c;
+
+  /* The one accent.
+     signal  = bright amber, dark backgrounds only (AA on ink-950)
+     deep    = the same hue as text/links on light (AA on paper) */
+  --color-signal: #fbbf24;
+  --color-signal-deep: #92400e;
+  --color-signal-wash: #fef6e7;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Motion — fast and purposeful, never bouncy */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-graphite-900);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Anchored sections clear the sticky header */
+  :target,
+  [id] {
+    scroll-margin-top: 5.5rem;
+  }
+
+  ::selection {
+    background-color: var(--color-signal);
+    color: var(--color-ink-950);
+  }
+
+  /* Visible, consistent focus. Amber ring works on both grounds. */
+  :focus-visible {
+    outline: 2px solid var(--color-signal-deep);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-signal);
+  }
+
+  /* Balanced headline wrapping where supported */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer utilities {
+  /* Editorial fluid type — large, but never overflowing a 360px phone */
+  .type-display {
+    font-size: clamp(2.15rem, 6.6vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+  }
+
+  .type-h2 {
+    font-size: clamp(1.9rem, 4.6vw, 3.25rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+  }
+
+  .type-h3 {
+    font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+
+  .type-lead {
+    font-size: clamp(1.0625rem, 1.7vw, 1.3125rem);
+    line-height: 1.55;
+    letter-spacing: -0.011em;
+  }
+
+  .type-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .section-pad {
+    padding-block: clamp(4.5rem, 10vw, 9rem);
+  }
+}
+
+/* Global honouring of prefers-reduced-motion. Framer Motion is told
+   separately via useReducedMotion(); this catches CSS transitions,
+   the poster shimmer, and anything third-party. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
