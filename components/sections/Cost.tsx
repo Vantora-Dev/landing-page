@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/Button";
+import { CallButton } from "@/components/ui/CallButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { cost } from "@/lib/content";
-import { CTA_HREF, CTA_PRIMARY, site } from "@/lib/site";
+import { CTA_HREF, CTA_PRIMARY } from "@/lib/site";
 
 /**
  * Sits where the pricing table used to. Removing published prices leaves an
@@ -63,20 +64,16 @@ export function Cost() {
         </ul>
 
         <Reveal delay={0.08}>
-          <div className="mt-16 flex flex-col gap-6 border-t border-ink-700 pt-12 md:mt-20 md:flex-row md:items-center md:justify-between">
+          <div className="mt-16 border-t border-ink-700 pt-12 md:mt-20">
             <div>
               <p className="type-label text-graphite-400">{cost.callPrompt}</p>
-              <a
-                href={`tel:${site.phoneHref}`}
-                className="type-h3 mt-3 inline-block text-paper transition-colors hover:text-signal"
-              >
-                {site.phone}
-              </a>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <CallButton />
+                <Button href={CTA_HREF} tone="dark" variant="secondary">
+                  {CTA_PRIMARY}
+                </Button>
+              </div>
             </div>
-
-            <Button href={CTA_HREF} tone="dark" variant="primary">
-              {CTA_PRIMARY}
-            </Button>
           </div>
         </Reveal>
       </div>

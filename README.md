@@ -110,11 +110,19 @@ both follow.
 `lib/contact-schema.ts` holds a dependency-free validator used by **both**
 sides, so client and server rules can't drift.
 
-**The endpoint is a stub.** It validates, rate-limits, catches the honeypot, and
-logs — it does not yet deliver anywhere. There are four numbered `TODO`s in the
-route covering the notification email, durable lead storage, a shared rate-limit
-store, and (only if needed) a CAPTCHA. Do not treat leads as safe until at least
-the first two are done.
+**Leads are delivered to `LEAD_WEBHOOK_URL`.** That can be a Slack incoming
+webhook, a Discord webhook, a Zapier/Make catch hook, or any endpoint that
+accepts a POST — one payload serves all of them, because Slack reads `text`,
+Discord reads `content`, and everything else reads the structured `lead` object.
+
+The rule the route follows: **it never reports success unless the lead actually
+went somewhere.** If the webhook is unset, times out, or returns a non-2xx, the
+visitor is told to phone instead and the enquiry is written to the function log
+so it can still be recovered. Silently swallowing an enquiry is the one failure
+mode that costs real money, so it is the one thing the route will not do.
+
+Set `LEAD_WEBHOOK_URL` in Vercel (Production and Preview) before pointing any
+traffic at the form.
 
 ---
 
@@ -150,7 +158,8 @@ change.
    | Variable | Value |
    |---|---|
    | `NEXT_PUBLIC_SITE_URL` | `https://laundrogrid.com` |
-   | `NEXT_PUBLIC_CAL_LINK` | e.g. `laundrogrid/15min` |
+   | `LEAD_WEBHOOK_URL` | Slack/Discord/Zapier webhook — **the form cannot capture leads without it** |
+   | `NEXT_PUBLIC_CAL_LINK` | e.g. `laundrogrid/15min` (optional) |
 
    `NEXT_PUBLIC_SITE_URL` feeds canonical URLs, Open Graph, the sitemap and
    JSON-LD — a wrong value here quietly damages SEO. `NEXT_PUBLIC_CAL_LINK` is
@@ -209,7 +218,7 @@ records above.
 - [ ] Confirm the phone number in `lib/site.ts` (`phone` **and** `phoneHref` — same number, human and E.164 formats)
 - [ ] Set `NEXT_PUBLIC_CAL_LINK` to the real Cal.com handle
 - [ ] Confirm `hello@laundrogrid.com` in `lib/site.ts` is a real, monitored inbox
-- [ ] Wire the contact route — at minimum TODO(1) notification and TODO(2) storage
+- [ ] Set `LEAD_WEBHOOK_URL` and submit the form once end to end to confirm a lead arrives
 - [ ] Write the privacy policy and terms pages; the footer currently says
       "coming before launch" rather than linking to a 404
 - [ ] Re-run Lighthouse mobile on the deployed URL

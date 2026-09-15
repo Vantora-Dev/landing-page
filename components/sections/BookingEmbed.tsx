@@ -6,13 +6,12 @@ import { site } from "@/lib/site";
 /**
  * Cal.com booking, loaded late and never on first paint.
  *
- * On tablet and up the iframe loads when the section scrolls into view; on
- * phones it waits for a tap, so a third-party frame never competes with the
- * page on a mid-range device or a metered connection.
+ * When no Cal.com handle is configured this renders **nothing** — a visitor
+ * must never be shown scaffolding about unset environment variables. The
+ * section around it leads with the phone number and the form instead, both of
+ * which work whether or not a calendar exists.
  *
- * TODO(launch): set NEXT_PUBLIC_CAL_LINK (e.g. "laundrogrid/15min") in the
- * Vercel project. Until it is set, this renders a clearly marked placeholder
- * rather than a broken frame.
+ * Set NEXT_PUBLIC_CAL_LINK (e.g. "laundrogrid/15min") to switch it on.
  */
 export function BookingEmbed() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,7 +22,8 @@ export function BookingEmbed() {
     const element = containerRef.current;
     if (!element) return;
 
-    // Phones wait for an explicit tap.
+    // Phones wait for an explicit tap; a third-party frame should never
+    // compete with the page on a mid-range device or a metered connection.
     if (!window.matchMedia("(min-width: 768px)").matches) return;
 
     const observer = new IntersectionObserver(
@@ -40,33 +40,11 @@ export function BookingEmbed() {
     return () => observer.disconnect();
   }, []);
 
-  if (!site.calLink) {
-    return (
-      <div
-        ref={containerRef}
-        className="flex min-h-[22rem] flex-col items-start justify-center rounded-lg border border-dashed border-ink-700 bg-white/[0.02] p-8"
-      >
-        <p className="type-label text-signal">Calendar embed placeholder</p>
-        <p className="mt-5 max-w-[34ch] text-[0.9375rem] leading-relaxed text-graphite-400">
-          The Cal.com booking calendar drops in here once{" "}
-          <code className="font-mono text-[0.875rem] text-paper">
-            NEXT_PUBLIC_CAL_LINK
-          </code>{" "}
-          is set. Until then, the form beside this is live and reaches us the
-          same way.
-        </p>
-        <a
-          href={`mailto:${site.email}?subject=15-minute%20call`}
-          className="mt-8 text-[0.9375rem] font-medium text-signal underline underline-offset-4 hover:text-paper"
-        >
-          Or email {site.email}
-        </a>
-      </div>
-    );
-  }
+  if (!site.calLink) return null;
 
   return (
-    <div ref={containerRef} className="min-h-[22rem]">
+    <div ref={containerRef} className="mb-12 border-b border-ink-700 pb-12">
+      <h3 className="type-label mb-5 text-graphite-400">Pick a time</h3>
       {loaded ? (
         <iframe
           title="Book a 15-minute call with LaundroGrid"
@@ -78,13 +56,12 @@ export function BookingEmbed() {
         <button
           type="button"
           onClick={() => setLoaded(true)}
-          className="flex min-h-[22rem] w-full flex-col items-start justify-center rounded-lg border border-ink-700 bg-white/[0.02] p-8 text-left transition-colors hover:border-graphite-400"
+          className="flex w-full flex-col items-start rounded-lg border border-ink-700 bg-white/[0.02] p-6 text-left transition-colors hover:border-graphite-400"
         >
-          <span className="type-label text-signal">Booking calendar</span>
-          <span className="mt-5 max-w-[30ch] text-[1.0625rem] leading-relaxed text-paper">
-            Tap to load the calendar and pick a time.
+          <span className="text-[1.0625rem] leading-relaxed text-paper">
+            Tap to load the calendar and pick a time
           </span>
-          <span className="mt-3 text-[0.8125rem] text-graphite-400">
+          <span className="mt-2 text-[0.8125rem] text-graphite-400">
             Loaded only when you ask for it, so the page stays fast on data.
           </span>
         </button>

@@ -66,7 +66,14 @@ export function validateContact(payload: unknown): ValidationResult {
   if (data.location.length < 2) fieldErrors.location = "City and state, roughly.";
   else if (data.location.length > 120) fieldErrors.location = "That's too long.";
 
-  if (data.phone.length > 40) fieldErrors.phone = "That phone number is too long.";
+  // Required, because the form's promise is a callback. Deliberately loose:
+  // it rejects an empty or obviously-not-a-number field, not unusual formats.
+  const phoneDigits = data.phone.replace(/[^0-9]/g, "");
+  if (phoneDigits.length < 7) {
+    fieldErrors.phone = "We need a number to call you on.";
+  } else if (data.phone.length > 40) {
+    fieldErrors.phone = "That phone number is too long.";
+  }
   if (data.message.length > 2000) {
     fieldErrors.message = "Please keep this under 2000 characters.";
   }

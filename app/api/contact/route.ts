@@ -1,26 +1,24 @@
 import { NextResponse } from "next/server";
 import { validateContact, type ContactResponse } from "@/lib/contact-schema";
+import { site } from "@/lib/site";
 
 /**
- * Stubbed contact endpoint.
+ * Contact endpoint.
  *
- * It validates, rejects obvious bots, and returns the shape the form expects —
- * but it does not yet deliver anywhere. Wiring it up is four steps:
+ * Leads are delivered to a single webhook (`LEAD_WEBHOOK_URL`) — Slack,
+ * Discord, Zapier and Make all accept an incoming POST, so one payload shape
+ * covers every one of them: Slack reads `text`, Discord reads `content`, and
+ * anything structured (Zapier, Make, a custom endpoint) reads `lead`. Each
+ * ignores the keys it doesn't recognise.
  *
- *  TODO(1): send a notification. Resend is the least friction on Vercel:
- *           `RESEND_API_KEY` in env, then post to /emails with a plain-text
- *           body built from `data`.
- *  TODO(2): write the lead somewhere durable so nothing is lost if email
- *           bounces — the CRM this business actually uses, or a Vercel
- *           Postgres/KV table keyed by submitted_at.
- *  TODO(3): replace the in-memory rate limit below with a shared store
- *           (Vercel KV / Upstash). The current one resets on every cold start
- *           and is per-instance, so it is a speed bump, not a defence.
- *  TODO(4): add a CAPTCHA (Cloudflare Turnstile) only if the honeypot proves
- *           insufficient in production. Don't add friction before it's needed.
+ * The rule here is that this route never tells a visitor their details were
+ * received unless they actually went somewhere. If the webhook is missing or
+ * fails, the visitor is told to phone instead, and the lead is written to the
+ * function log so it can still be recovered. Silently swallowing an enquiry is
+ * the one failure mode that costs real money.
  *
- * Deliberately no third-party call today: nothing here can leak a lead to a
- * service that hasn't been chosen yet.
+ * TODO(optional): add a second sink (email, or a database) if one webhook ever
+ * feels like too few places for a lead to live.
  */
 
 export const runtime = "nodejs";
@@ -28,6 +26,10 @@ export const dynamic = "force-dynamic";
 
 const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 5;
+const WEBHOOK_TIMEOUT_MS = 8000;
+
+// Per-instance and reset on cold start: a speed bump against casual abuse, not
+// a defence. Swap for a shared store (Vercel KV) if it is ever actually needed.
 const hits = new Map<string, { count: number; resetAt: number }>();
 
 function rateLimited(key: string): boolean {
@@ -41,6 +43,65 @@ function rateLimited(key: string): boolean {
 
   entry.count += 1;
   return entry.count > MAX_PER_WINDOW;
+}
+
+type Lead = {
+  name: string;
+  email: string;
+  phone: string;
+  business: string;
+  location: string;
+  message: string;
+};
+
+function buildSummary(lead: Lead): string {
+  // Discord caps `content` at 2000 characters, so the free-text answer is
+  // trimmed rather than risking a rejected delivery.
+  const note = lead.message.length > 1200 ? `${lead.message.slice(0, 1200)}…` : lead.message;
+
+  return [
+    `New enquiry — ${lead.business}`,
+    `${lead.name} · ${lead.location}`,
+    `${lead.email} · ${lead.phone}`,
+    note ? `\n"${note}"` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+async function deliver(lead: Lead): Promise<boolean> {
+  const url = process.env.LEAD_WEBHOOK_URL;
+  if (!url) return false;
+
+  const summary = buildSummary(lead);
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: summary, // Slack
+        content: summary, // Discord
+        lead, // Zapier / Make / anything structured
+        receivedAt: new Date().toISOString(),
+        source: site.domain,
+      }),
+      signal: AbortSignal.timeout(WEBHOOK_TIMEOUT_MS),
+    });
+
+    if (!response.ok) {
+      console.error("[contact] webhook rejected the lead", {
+        status: response.status,
+        body: (await response.text().catch(() => "")).slice(0, 300),
+      });
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("[contact] webhook delivery failed", error);
+    return false;
+  }
 }
 
 export async function POST(request: Request): Promise<NextResponse<ContactResponse>> {
@@ -58,10 +119,7 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
   try {
     payload = await request.json();
   } catch {
-    return NextResponse.json(
-      { ok: false, error: "Malformed request." },
-      { status: 400 },
-    );
+    return NextResponse.json({ ok: false, error: "Malformed request." }, { status: 400 });
   }
 
   const parsed = validateContact(payload);
@@ -77,20 +135,27 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
     );
   }
 
-  // Honeypot tripped: accept silently so a bot learns nothing from the response.
+  // Honeypot tripped: accept silently so a bot learns nothing from the reply.
   if (parsed.data.company) {
     return NextResponse.json({ ok: true });
   }
 
-  const { company: _honeypot, ...data } = parsed.data;
+  const { company: _honeypot, ...lead } = parsed.data;
 
-  // Until TODO(1) and TODO(2) are done, this log IS the delivery mechanism.
-  // It shows up in the Vercel function logs. Do not ship to production
-  // without wiring at least the notification.
-  console.info("[contact] new enquiry", {
-    ...data,
-    receivedAt: new Date().toISOString(),
-  });
+  // Always logged, so a lead is recoverable even when delivery fails.
+  console.info("[contact] enquiry", { ...lead, receivedAt: new Date().toISOString() });
+
+  const delivered = await deliver(lead);
+
+  if (!delivered) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: `We couldn't submit that just now. Please call ${site.phone} and we'll pick it up straight away.`,
+      },
+      { status: 502 },
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }

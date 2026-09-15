@@ -1,9 +1,15 @@
+import { CallButton } from "@/components/ui/CallButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { finalCta } from "@/lib/content";
 import { site } from "@/lib/site";
 import { BookingEmbed } from "./BookingEmbed";
 import { ContactForm } from "./ContactForm";
 
+/**
+ * Two ways to start a conversation, in order of how quickly they work:
+ * phone first (it connects in seconds and costs the visitor nothing), the
+ * form second for anyone who would rather be called back.
+ */
 export function FinalCta() {
   return (
     <section id="book" className="on-dark relative overflow-hidden bg-ink-950">
@@ -59,34 +65,36 @@ export function FinalCta() {
                 ))}
               </ul>
             </Reveal>
-
-            <Reveal delay={0.18}>
-              <div className="mt-10 border-t border-ink-700 pt-8">
-                <p className="type-label text-graphite-400">Or call us directly</p>
-                <a
-                  href={`tel:${site.phoneHref}`}
-                  className="type-h3 mt-3 inline-block text-paper transition-colors hover:text-signal"
-                >
-                  {site.phone}
-                </a>
-              </div>
-            </Reveal>
           </div>
 
           <div className="md:col-span-7">
+            <BookingEmbed />
+
+            {/* The fastest path, given top billing. */}
             <Reveal delay={0.08}>
-              <h3 className="type-label text-graphite-400">Pick a time</h3>
-              <div className="mt-5">
-                <BookingEmbed />
+              <div className="rounded-lg border border-ink-700 bg-white/[0.02] p-6 md:p-8">
+                <p className="type-label text-graphite-400">Fastest — call us</p>
+                <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <CallButton />
+                  <a
+                    href={`mailto:${site.email}`}
+                    className="text-[0.9375rem] text-graphite-400 underline underline-offset-4 transition-colors hover:text-paper"
+                  >
+                    Or email {site.email}
+                  </a>
+                </div>
               </div>
             </Reveal>
 
             <Reveal delay={0.1}>
-              <div className="mt-12 border-t border-ink-700 pt-12">
-                <h3 className="type-label text-graphite-400">
+              <div className="mt-10 border-t border-ink-700 pt-10">
+                <h3 className="type-h3 text-paper">
                   Or leave your details and we&rsquo;ll call you
                 </h3>
-                <div className="mt-6">
+                <p className="mt-2 text-[0.875rem] text-graphite-400">
+                  Takes about thirty seconds. We reply within one business day.
+                </p>
+                <div className="mt-7">
                   <ContactForm />
                 </div>
               </div>

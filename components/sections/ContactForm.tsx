@@ -9,7 +9,7 @@ const fields = [
   { name: "name", label: "Your name", type: "text", autoComplete: "name", required: true },
   { name: "business", label: "Laundromat name", type: "text", autoComplete: "organization", required: true },
   { name: "email", label: "Email", type: "email", autoComplete: "email", required: true },
-  { name: "phone", label: "Phone (optional)", type: "tel", autoComplete: "tel", required: false },
+  { name: "phone", label: "Phone", type: "tel", autoComplete: "tel", required: true },
   { name: "location", label: "City and state", type: "text", autoComplete: "address-level2", required: true },
 ] as const;
 
@@ -70,7 +70,7 @@ export function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="on-dark">
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         {fields.map((field) => {
           const id = `${formId}-${field.name}`;
           const error = fieldErrors[field.name];
@@ -109,14 +109,14 @@ export function ContactForm() {
             htmlFor={`${formId}-message`}
             className="block text-[0.8125rem] font-medium text-graphite-400"
           >
-            What you&rsquo;re hoping to add (optional)
+            Anything else (optional)
           </label>
           <textarea
             id={`${formId}-message`}
             name="message"
-            rows={3}
+            rows={2}
             className={`mt-2 ${inputClass} resize-y`}
-            placeholder="Wash-and-fold, delivery, memberships — or just tell us where you're stuck."
+            placeholder="Wash-and-fold, delivery, memberships — or where you're stuck."
           />
         </div>
       </div>
@@ -127,24 +127,48 @@ export function ContactForm() {
         <input id={`${formId}-company`} name="company" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <button
-        type="submit"
-        disabled={status === "submitting"}
-        className="mt-7 inline-flex min-h-[3rem] w-full items-center justify-center rounded-md bg-signal px-6 text-[0.9375rem] font-medium text-ink-950 transition-colors hover:bg-[#fcd34d] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-      >
-        {status === "submitting" ? "Sending…" : "Request a call"}
-      </button>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+        <button
+          type="submit"
+          disabled={status === "submitting"}
+          className="inline-flex min-h-[3.25rem] w-full items-center justify-center gap-2 rounded-md bg-signal px-7 text-[1rem] font-medium tracking-[-0.01em] text-ink-950 transition-colors hover:bg-[#fcd34d] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        >
+          {status === "submitting" ? "Sending…" : "Send my details"}
+          {status === "submitting" ? null : (
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 16 16"
+              className="h-[0.9rem] w-[0.9rem]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <path d="M2 8h11M9 4l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+        </button>
+
+        <p className="text-[0.8125rem] text-graphite-400">
+          No obligation. We never share your details.
+        </p>
+      </div>
 
       {/* Announced to screen readers without stealing focus */}
-      <p
-        role="status"
-        aria-live="polite"
-        className={`mt-4 text-[0.875rem] ${
-          status === "success" ? "text-signal" : "text-graphite-400"
-        }`}
-      >
-        {message}
-      </p>
+      {message ? (
+        <p
+          role="status"
+          aria-live="polite"
+          className={`mt-5 rounded-md border px-4 py-3 text-[0.875rem] leading-relaxed ${
+            status === "success"
+              ? "border-signal/40 bg-signal/10 text-signal"
+              : "border-ink-700 bg-white/[0.03] text-graphite-400"
+          }`}
+        >
+          {message}
+        </p>
+      ) : (
+        <p role="status" aria-live="polite" className="sr-only" />
+      )}
     </form>
   );
 }
