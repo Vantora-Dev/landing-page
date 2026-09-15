@@ -110,10 +110,14 @@ both follow.
 `lib/contact-schema.ts` holds a dependency-free validator used by **both**
 sides, so client and server rules can't drift.
 
-**Leads are delivered to `LEAD_WEBHOOK_URL`.** That can be a Slack incoming
-webhook, a Discord webhook, a Zapier/Make catch hook, or any endpoint that
-accepts a POST — one payload serves all of them, because Slack reads `text`,
-Discord reads `content`, and everything else reads the structured `lead` object.
+**Leads are delivered to `LEAD_WEBHOOK_URL`.** That can be a Discord webhook, a
+Slack incoming webhook, a Zapier/Make catch hook, or any endpoint accepting a
+POST. `lib/lead-webhook.ts` shapes the body to match the destination, detected
+from the URL — Discord gets a rich embed built to its own contract (it rejects
+payloads containing keys it doesn't recognise, and caps embed field values at
+1024 characters), Slack gets `{ text }`, and anything else gets the structured
+`lead` object. That shaping is separated from the route precisely so it can be
+verified without standing up a server; a rejected delivery is a lost enquiry.
 
 The rule the route follows: **it never reports success unless the lead actually
 went somewhere.** If the webhook is unset, times out, or returns a non-2xx, the

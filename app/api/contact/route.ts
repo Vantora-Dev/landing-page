@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { validateContact, type ContactResponse } from "@/lib/contact-schema";
+import { buildPayload, type Lead } from "@/lib/lead-webhook";
 import { site } from "@/lib/site";
 
 /**
@@ -45,47 +46,15 @@ function rateLimited(key: string): boolean {
   return entry.count > MAX_PER_WINDOW;
 }
 
-type Lead = {
-  name: string;
-  email: string;
-  phone: string;
-  business: string;
-  location: string;
-  message: string;
-};
-
-function buildSummary(lead: Lead): string {
-  // Discord caps `content` at 2000 characters, so the free-text answer is
-  // trimmed rather than risking a rejected delivery.
-  const note = lead.message.length > 1200 ? `${lead.message.slice(0, 1200)}…` : lead.message;
-
-  return [
-    `New enquiry — ${lead.business}`,
-    `${lead.name} · ${lead.location}`,
-    `${lead.email} · ${lead.phone}`,
-    note ? `\n"${note}"` : "",
-  ]
-    .filter(Boolean)
-    .join("\n");
-}
-
 async function deliver(lead: Lead): Promise<boolean> {
   const url = process.env.LEAD_WEBHOOK_URL;
   if (!url) return false;
-
-  const summary = buildSummary(lead);
 
   try {
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text: summary, // Slack
-        content: summary, // Discord
-        lead, // Zapier / Make / anything structured
-        receivedAt: new Date().toISOString(),
-        source: site.domain,
-      }),
+      body: JSON.stringify(buildPayload(url, lead)),
       signal: AbortSignal.timeout(WEBHOOK_TIMEOUT_MS),
     });
 
