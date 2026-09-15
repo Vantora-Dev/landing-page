@@ -41,9 +41,8 @@ JSX.
 | File | What's in it |
 |---|---|
 | `lib/content.ts` | Every section's headings and body copy |
-| `lib/pricing.ts` | The three tiers, prices, and the two honesty notes |
 | `lib/faq.ts` | Objections — **the single source for both the accordion and the FAQ schema** |
-| `lib/site.ts` | Name, URL, email, Cal.com handle, nav |
+| `lib/site.ts` | Name, URL, email, phone, Cal.com handle, nav |
 | `lib/schema.ts` | JSON-LD, built from the files above |
 | `app/globals.css` | Colour tokens, type scale, motion easing |
 
@@ -59,6 +58,10 @@ the audience has been oversold by three web designers already.
 - **No specific customer numbers, revenue figures, percentages or multiples.**
   The `Counter` component is only ever used to count things we actually
   provide (revenue streams, parts of the system).
+- **No published prices.** The site deliberately quotes on a call instead. If
+  prices are ever put back on the page, the `Offer` / `OfferCatalog` markup
+  must go back into `lib/schema.ts` at the same time — schema that advertises
+  prices the page doesn't show is the mismatch Google penalises.
 - **No testimonials, client logos or case studies** until real, consented ones
   exist. Where social proof would go, there are marked placeholders. Do not
   invent them.
@@ -121,13 +124,16 @@ Lighthouse, mobile preset, against `pnpm build && pnpm start`:
 
 | | |
 |---|---|
-| Performance | **97** |
+| Performance | **94–97** |
 | Accessibility | **100** |
 | Best Practices | **100** |
 | SEO | **100** |
 
-FCP 1.4s · LCP 2.4s · TBT 90ms · CLS 0. Performance moves a point or two
-run to run; treat 90 as the floor, not 97 as a guarantee.
+FCP 1.4s · TBT 90ms · CLS 0. LCP swings between 2.4s and 3.0s on identical
+builds, which is what moves performance between 94 and 97 — the LCP element is
+the `h1`, so the measurement lands on either the fallback-font paint or the
+swapped-font paint depending on when the font arrives. Treat 90 as the floor,
+not 97 as a guarantee, and don't chase a single low run.
 
 `three` and `@react-three/fiber` are absent from the initial route JS and load
 only after the capability gate passes. Re-check these after any dependency
@@ -200,7 +206,7 @@ records above.
 
 ## Before launch
 
-- [ ] Confirm the three prices in `lib/pricing.ts`
+- [ ] Confirm the phone number in `lib/site.ts` (`phone` **and** `phoneHref` — same number, human and E.164 formats)
 - [ ] Set `NEXT_PUBLIC_CAL_LINK` to the real Cal.com handle
 - [ ] Confirm `hello@laundrogrid.com` in `lib/site.ts` is a real, monitored inbox
 - [ ] Wire the contact route — at minimum TODO(1) notification and TODO(2) storage

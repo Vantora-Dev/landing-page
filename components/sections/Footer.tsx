@@ -13,12 +13,20 @@ export function Footer() {
               {site.name} installs and operates digital revenue systems for
               independent laundromats in the United States.
             </p>
-            <a
-              href={`mailto:${site.email}`}
-              className="mt-6 inline-block text-[0.9375rem] text-paper underline underline-offset-4 hover:text-signal"
-            >
-              {site.email}
-            </a>
+            <div className="mt-6 flex flex-col gap-2">
+              <a
+                href={`mailto:${site.email}`}
+                className="text-[0.9375rem] text-paper underline underline-offset-4 hover:text-signal"
+              >
+                {site.email}
+              </a>
+              <a
+                href={`tel:${site.phoneHref}`}
+                className="text-[0.9375rem] text-paper underline underline-offset-4 hover:text-signal"
+              >
+                {site.phone}
+              </a>
+            </div>
           </div>
 
           <div className="md:col-span-4">

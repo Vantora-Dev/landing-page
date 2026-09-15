@@ -171,6 +171,35 @@ export const process = {
   quote: "You give us your business details and photos. We handle the rest.",
 };
 
+/**
+ * Replaces the old pricing table.
+ *
+ * The section still answers "what does it cost?" head-on rather than pretending
+ * a skeptical buyer won't ask — it just answers it honestly, which is that the
+ * number depends on the store. The advertising-budget note is kept from the
+ * old pricing block because it is the strongest trust signal on the page.
+ */
+export const cost = {
+  label: "05 — What it costs",
+  heading: "Pricing depends on your store. So we quote it on a call, not on a page.",
+  lead: "A two-location operator already running wash-and-fold and an unattended single store need different systems — and a price list can't tell the difference between them. Fifteen minutes on the phone can.",
+  notes: [
+    {
+      title: "Advertising budget is separate",
+      body: "If you choose to run ads, that budget is paid by you, directly to Google or Meta. We never mark it up and we never take a cut of it.",
+    },
+    {
+      title: "Setup is quoted after we've seen the store",
+      body: "It depends on how many locations you have and what already exists. We'd rather quote it having looked than give you a number that turns out to be wrong.",
+    },
+    {
+      title: "Month to month",
+      body: "No lock-in and no long contract. Your customer list, order history and contact details are yours, and you can export them and go.",
+    },
+  ],
+  callPrompt: "Prefer to just talk?",
+};
+
 export const fit = {
   label: "06 — Who this is for",
   heading: "Two ways in. Both of them honest.",

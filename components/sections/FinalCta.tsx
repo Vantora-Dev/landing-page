@@ -1,5 +1,6 @@
 import { Reveal } from "@/components/ui/Reveal";
 import { finalCta } from "@/lib/content";
+import { site } from "@/lib/site";
 import { BookingEmbed } from "./BookingEmbed";
 import { ContactForm } from "./ContactForm";
 
@@ -57,6 +58,18 @@ export function FinalCta() {
                   </li>
                 ))}
               </ul>
+            </Reveal>
+
+            <Reveal delay={0.18}>
+              <div className="mt-10 border-t border-ink-700 pt-8">
+                <p className="type-label text-graphite-400">Or call us directly</p>
+                <a
+                  href={`tel:${site.phoneHref}`}
+                  className="type-h3 mt-3 inline-block text-paper transition-colors hover:text-signal"
+                >
+                  {site.phone}
+                </a>
+              </div>
             </Reveal>
           </div>
 

@@ -1,6 +1,5 @@
 import { faq } from "./faq";
 import { site } from "./site";
-import { tiers } from "./pricing";
 
 /**
  * JSON-LD.
@@ -10,8 +9,7 @@ import { tiers } from "./pricing";
  * both a Google guidelines risk and contradicts the honesty this page sells.
  * Organization + Service + FAQPage describe the business accurately.
  *
- * TODO(launch): add `sameAs` links once social profiles exist, and `telephone`
- * if a public business line is set up.
+ * TODO(launch): add `sameAs` links once social profiles exist.
  */
 
 const organization = {
@@ -21,6 +19,15 @@ const organization = {
   url: site.url,
   description: site.description,
   email: site.email,
+  telephone: site.phoneHref,
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "sales",
+    telephone: site.phoneHref,
+    email: site.email,
+    areaServed: "US",
+    availableLanguage: ["en"],
+  },
   areaServed: { "@type": "Country", name: "United States" },
   knowsAbout: [
     "Laundromat marketing",
@@ -53,26 +60,6 @@ const service = {
   },
   description:
     "Website, online wash-and-fold ordering, pickup and delivery booking, monthly membership plans, a self-building customer database, SMS and email automation, Google Business Profile management and monthly reporting — installed and operated for the owner.",
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "LaundroGrid plans",
-    itemListElement: tiers.map((tier) => ({
-      "@type": "Offer",
-      name: tier.name,
-      description: tier.summary,
-      priceSpecification: {
-        "@type": "UnitPriceSpecification",
-        price: tier.from,
-        priceCurrency: "USD",
-        unitCode: "MON",
-        // "from $X/month" — the listed price is a floor, not a fixed price.
-        minPrice: tier.from,
-        valueAddedTaxIncluded: false,
-      },
-      availability: "https://schema.org/InStock",
-      url: `${site.url}/#pricing`,
-    })),
-  },
 };
 
 const faqPage = {

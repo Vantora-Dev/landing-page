@@ -1,9 +1,9 @@
 import { Hero } from "@/components/hero/Hero";
+import { Cost } from "@/components/sections/Cost";
 import { Faq } from "@/components/sections/Faq";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { Fit } from "@/components/sections/Fit";
 import { Footer } from "@/components/sections/Footer";
-import { Pricing } from "@/components/sections/Pricing";
 import { Problem } from "@/components/sections/Problem";
 import { Process } from "@/components/sections/Process";
 import { Streams } from "@/components/sections/Streams";
@@ -21,7 +21,7 @@ export default function Page() {
         <System />
         <Streams />
         <Process />
-        <Pricing />
+        <Cost />
         <Fit />
         <Faq />
         <FinalCta />

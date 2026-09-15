@@ -29,6 +29,14 @@ export const site = {
   email: "hello@laundrogrid.com",
 
   /**
+   * Displayed as written; `phoneHref` is the same number in E.164 for tel:
+   * links. Keep the two in sync — they are the same number, formatted for a
+   * human and for a dialler respectively.
+   */
+  phone: "+92 333 0500600",
+  phoneHref: "+923330500600",
+
+  /**
    * Cal.com booking handle, e.g. "laundrogrid/15min".
    * The booking embed renders a clearly-marked placeholder until this is set.
    */
@@ -44,7 +52,7 @@ export const nav = [
   { label: "What we install", href: "#system" },
   { label: "Revenue", href: "#revenue" },
   { label: "How it works", href: "#process" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "What it costs", href: "#cost" },
   { label: "FAQ", href: "#faq" },
 ] as const;
 
