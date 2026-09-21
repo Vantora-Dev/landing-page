@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LaundroGrid">
+  <rect width="64" height="64" rx="13" fill="#08080a"/>
+  <g fill="#3f3f46">
+    <rect x="43.00" y="7.36"  width="13.63" height="13.63" rx="2.45"/>
+    <rect x="25.18" y="25.18" width="13.63" height="13.63" rx="2.45"/>
+    <rect x="43.00" y="25.18" width="13.63" height="13.63" rx="2.45"/>
+    <rect x="7.36"  y="43.00" width="13.63" height="13.63" rx="2.45"/>
+    <rect x="25.18" y="43.00" width="13.63" height="13.63" rx="2.45"/>
+    <rect x="43.00" y="43.00" width="13.63" height="13.63" rx="2.45"/>
+  </g>
+  <g fill="#fbbf24">
+    <rect x="7.36"  y="7.36"  width="13.63" height="13.63" rx="2.45"/>
+    <rect x="25.18" y="7.36"  width="13.63" height="13.63" rx="2.45"/>
+    <rect x="7.36"  y="25.18" width="13.63" height="13.63" rx="2.45"/>
+  </g>
+</svg>

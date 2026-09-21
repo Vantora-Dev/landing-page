@@ -49,6 +49,15 @@ export const site = {
    */
   calLink,
 
+  /**
+   * Date the page's content last meaningfully changed — used for sitemap
+   * `lastmod`. Deliberately a constant rather than `new Date()`: a lastmod
+   * that moves on every deploy tells Google the page changed when it didn't,
+   * and a crawler that learns your lastmod is meaningless starts ignoring it.
+   * Bump this when the copy actually changes.
+   */
+  contentUpdatedAt: "2026-09-21",
+
   tagline: "Digital revenue systems for US laundromats",
   description:
     "LaundroGrid installs and operates the digital revenue system for independent US laundromats — website, online wash-and-fold ordering, pickup and delivery, memberships, customer database and marketing automation. You keep running the store.",

@@ -43,6 +43,14 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
+  /**
+   * Only emitted when the env var is set. The DNS TXT route in Search Console
+   * is preferable (it verifies the whole domain, including subdomains, and
+   * survives a redeploy), but this is here for the HTML-tag route.
+   */
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
   category: "business",
   formatDetection: { telephone: false, address: false, email: false },
 };

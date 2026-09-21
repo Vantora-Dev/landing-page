@@ -104,6 +104,40 @@ both follow.
 
 ---
 
+## SEO
+
+The technical side is done and verifiable in the served HTML: a unique title
+and description, a canonical URL, Open Graph and Twitter cards with a
+build-generated image, `robots.txt`, `sitemap.xml`, semantic headings with a
+single `h1`, and JSON-LD for Organization + WebSite + Service + FAQPage. The
+FAQ markup is the one most likely to earn a rich result, and it is generated
+from `lib/faq.ts`, so the page and the markup cannot disagree.
+
+Two details that are easy to get wrong and are handled deliberately:
+
+- **`lastmod` is a constant**, `site.contentUpdatedAt`, not `new Date()`. A
+  lastmod that moves on every deploy tells Google the page changed when it
+  didn't, and a crawler that learns your lastmod is meaningless stops using it.
+  Bump it when the copy actually changes.
+- **No `Offer` markup**, because no prices are published. Schema advertising
+  prices the page doesn't show is a mismatch Google penalises.
+
+**None of that gets you indexed on its own.** A new domain has to be told to
+Google:
+
+1. Add the property in [Google Search Console](https://search.google.com/search-console).
+   The DNS TXT route verifies the whole domain and survives redeploys — prefer
+   it. If you'd rather use the HTML tag, set `GOOGLE_SITE_VERIFICATION` in
+   Vercel and **redeploy**: `metadata` is evaluated at build time, so setting
+   the variable without a rebuild does nothing.
+2. Submit `https://laundrogrid.com/sitemap.xml` under Sitemaps.
+3. Use URL Inspection on `https://laundrogrid.com/` and Request Indexing.
+
+Expect the brand name to rank within days of indexing, because nothing else
+competes for it. Competitive terms ("laundromat marketing", "wash and fold
+website") are a different problem that pages alone don't solve — they need
+content and links over months.
+
 ## Contact form
 
 `components/sections/ContactForm.tsx` posts to `app/api/contact/route.ts`.
@@ -226,6 +260,6 @@ records above.
 - [ ] Write the privacy policy and terms pages; the footer currently says
       "coming before launch" rather than linking to a 404
 - [ ] Re-run Lighthouse mobile on the deployed URL
-- [ ] Submit the sitemap in Google Search Console
+- [ ] Verify the domain in Google Search Console, submit the sitemap, and Request Indexing on the homepage
 - [ ] Replace the social-proof placeholders **only** with real, consented
       testimonials
