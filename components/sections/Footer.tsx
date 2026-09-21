@@ -27,6 +27,26 @@ export function Footer() {
                 {site.phone}
               </a>
             </div>
+
+            <a
+              href={site.linkedin}
+              target="_blank"
+              // noopener closes the window.opener hole; noreferrer keeps the
+              // referrer off a third party we don't control.
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2.5 text-[0.9375rem] text-graphite-400 transition-colors hover:text-paper"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-[1.05rem] w-[1.05rem] shrink-0"
+                fill="currentColor"
+              >
+                <path d="M6.94 5.5a2.44 2.44 0 1 1-4.88 0 2.44 2.44 0 0 1 4.88 0ZM7 9.24H2.5V22H7V9.24Zm7.32 0h-4.4V22h4.4v-6.7c0-4.08 5.32-4.42 5.32 0V22H24v-8.22c0-6.87-7.86-6.62-9.68-3.24V9.24Z" />
+              </svg>
+              LinkedIn
+              <span className="sr-only">(opens in a new tab)</span>
+            </a>
           </div>
 
           <div className="md:col-span-4">

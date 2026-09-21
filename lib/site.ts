@@ -37,6 +37,13 @@ export const site = {
   phoneHref: "+923330500600",
 
   /**
+   * Public profiles. Listed in JSON-LD `sameAs`, which is how Google ties this
+   * site and that profile to the same organisation — so the URL must match the
+   * canonical one exactly, trailing slash included.
+   */
+  linkedin: "https://www.linkedin.com/company/laundrogrid/",
+
+  /**
    * Cal.com booking handle, e.g. "laundrogrid/15min".
    * The booking embed renders a clearly-marked placeholder until this is set.
    */

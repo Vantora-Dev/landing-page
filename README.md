@@ -42,7 +42,7 @@ JSX.
 |---|---|
 | `lib/content.ts` | Every section's headings and body copy |
 | `lib/faq.ts` | Objections — **the single source for both the accordion and the FAQ schema** |
-| `lib/site.ts` | Name, URL, email, phone, Cal.com handle, nav |
+| `lib/site.ts` | Name, URL, email, phone, LinkedIn, Cal.com handle, nav |
 | `lib/schema.ts` | JSON-LD, built from the files above |
 | `app/globals.css` | Colour tokens, type scale, motion easing |
 

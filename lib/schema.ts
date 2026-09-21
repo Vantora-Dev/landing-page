@@ -8,8 +8,6 @@ import { site } from "./site";
  * address, and emitting LocalBusiness without a real, verifiable address is
  * both a Google guidelines risk and contradicts the honesty this page sells.
  * Organization + Service + FAQPage describe the business accurately.
- *
- * TODO(launch): add `sameAs` links once social profiles exist.
  */
 
 const organization = {
@@ -20,6 +18,8 @@ const organization = {
   description: site.description,
   email: site.email,
   telephone: site.phoneHref,
+  // Ties this domain and the LinkedIn page to one entity for Google.
+  sameAs: [site.linkedin],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "sales",
