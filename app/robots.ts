@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Nothing to index behind the contact endpoint.
+      // Nothing to index behind the booking endpoint.
       disallow: "/api/",
     },
     sitemap: `${site.url}/sitemap.xml`,

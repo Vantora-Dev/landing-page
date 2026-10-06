@@ -2,13 +2,12 @@ import { CallButton } from "@/components/ui/CallButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { finalCta } from "@/lib/content";
 import { site } from "@/lib/site";
-import { BookingEmbed } from "./BookingEmbed";
-import { ContactForm } from "./ContactForm";
+import { BookingForm } from "./BookingForm";
 
 /**
  * Two ways to start a conversation, in order of how quickly they work:
  * phone first (it connects in seconds and costs the visitor nothing), the
- * form second for anyone who would rather be called back.
+ * booking form second for anyone who would rather pick a time.
  */
 export function FinalCta() {
   return (
@@ -68,8 +67,6 @@ export function FinalCta() {
           </div>
 
           <div className="md:col-span-7">
-            <BookingEmbed />
-
             {/* The fastest path, given top billing. */}
             <Reveal delay={0.08}>
               <div className="rounded-lg border border-ink-700 bg-white/[0.02] p-6 md:p-8">
@@ -89,13 +86,14 @@ export function FinalCta() {
             <Reveal delay={0.1}>
               <div className="mt-10 border-t border-ink-700 pt-10">
                 <h3 className="type-h3 text-paper">
-                  Or leave your details and we&rsquo;ll call you
+                  Or book a time and we&rsquo;ll call you
                 </h3>
                 <p className="mt-2 text-[0.875rem] text-graphite-400">
-                  Takes about thirty seconds. We reply within one business day.
+                  Pick a slot that suits you. We ring the number you give us,
+                  right on time.
                 </p>
                 <div className="mt-7">
-                  <ContactForm />
+                  <BookingForm />
                 </div>
               </div>
             </Reveal>

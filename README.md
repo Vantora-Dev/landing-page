@@ -5,8 +5,7 @@ that sells one idea: a laundromat's customers are anonymous, and LaundroGrid
 turns anonymous walk-ins into known customers who pay every month.
 
 **This is a standalone repo on purpose.** It shares no types, no database and no
-deploy cadence with the platform. It has no backend beyond one stubbed contact
-endpoint.
+deploy cadence with the platform. It has no backend beyond the booking endpoints.
 
 ---
 
@@ -42,7 +41,8 @@ JSX.
 |---|---|
 | `lib/content.ts` | Every section's headings and body copy |
 | `lib/faq.ts` | Objections — **the single source for both the accordion and the FAQ schema** |
-| `lib/site.ts` | Name, URL, email, phone, LinkedIn, Cal.com handle, nav |
+| `lib/site.ts` | Name, URL, email, phone, LinkedIn, GA ID, nav |
+| `lib/booking.ts` | Bookable hours, call types, booking validation |
 | `lib/schema.ts` | JSON-LD, built from the files above |
 | `app/globals.css` | Colour tokens, type scale, motion easing |
 
@@ -138,29 +138,85 @@ competes for it. Competitive terms ("laundromat marketing", "wash and fold
 website") are a different problem that pages alone don't solve — they need
 content and links over months.
 
-## Contact form
+## Booking and the confirmation page
 
-`components/sections/ContactForm.tsx` posts to `app/api/contact/route.ts`.
-`lib/contact-schema.ts` holds a dependency-free validator used by **both**
-sides, so client and server rules can't drift.
+`components/sections/BookingForm.tsx` posts to `app/api/book/route.ts`, and on
+success sends the visitor to **`/confirmed`** (`app/confirmed/page.tsx`).
+`lib/booking.ts` holds the slot rules and a dependency-free validator used by
+**both** sides, so client and server rules can't drift.
 
-**Leads are delivered to `LEAD_WEBHOOK_URL`.** That can be a Discord webhook, a
-Slack incoming webhook, a Zapier/Make catch hook, or any endpoint accepting a
-POST. `lib/lead-webhook.ts` shapes the body to match the destination, detected
-from the URL — Discord gets a rich embed built to its own contract (it rejects
-payloads containing keys it doesn't recognise, and caps embed field values at
-1024 characters), Slack gets `{ text }`, and anything else gets the structured
-`lead` object. That shaping is separated from the route precisely so it can be
-verified without standing up a server; a rejected delivery is a lost enquiry.
+**Slots.** `bookingRules` in `lib/booking.ts` sets them: UK office hours
+(`Europe/London`), weekdays, 9:00 AM to 5:30 PM in half-hour steps, the next 15
+weekdays starting tomorrow. Each slot is shown converted to the **visitor's**
+time zone; the route re-checks the chosen instant against the same rules in UK
+time.
 
-The rule the route follows: **it never reports success unless the lead actually
-went somewhere.** If the webhook is unset, times out, or returns a non-2xx, the
-visitor is told to phone instead and the enquiry is written to the function log
-so it can still be recovered. Silently swallowing an enquiry is the one failure
-mode that costs real money, so it is the one thing the route will not do.
+**Availability.** The form loads its slots from `app/api/slots/route.ts`, which
+removes anything busy on the team's Google Calendar (`lib/google-calendar.ts`)
+— earlier bookings and the team's own meetings alike. On submit the route
+checks the slot again, refuses it if it has just gone, and otherwise adds the
+booking to the calendar, which is what closes the slot for the next visitor.
+If the calendar isn't configured or Google is unreachable, every slot is
+offered and booking carries on by email: a calendar outage must never be why a
+lead can't book.
 
-Set `LEAD_WEBHOOK_URL` in Vercel (Production and Preview) before pointing any
-traffic at the form.
+**Delivery.** Each booking is emailed to `site.email` through
+[Resend](https://resend.com) (`lib/booking-email.ts`, plain `fetch`, no mail
+dependency). The email shows the slot in the visitor's zone and in UK time,
+and its reply-to is the visitor. The visitor gets their own confirmation email
+with the call attached as a calendar (`.ics`) file. Both need `RESEND_API_KEY`
+and the sending domain verified in Resend. If `LEAD_WEBHOOK_URL` is also set, a
+copy goes there too; `lib/lead-webhook.ts` shapes the body for Discord, Slack,
+or anything else.
+
+The rule the route follows: **it never reports success unless the booking
+actually went somewhere** — the calendar, the inbox or the webhook. If none
+accepts it, the visitor is told to phone instead and the booking is written to
+the function log so it can still be recovered.
+
+### Connecting Google Calendar
+
+1. In [Google Cloud Console](https://console.cloud.google.com/), create a
+   project (any name) and enable the **Google Calendar API** for it.
+2. Under **IAM & Admin → Service Accounts**, create a service account. It needs
+   no roles. Open it, go to **Keys → Add key → Create new key → JSON**, and
+   keep the downloaded file private.
+3. In Google Calendar, signed in as `hello@laundrogrid.com`, open the
+   calendar's **Settings and sharing → Share with specific people**, add the
+   service account's email address (`…@….iam.gserviceaccount.com`) and give it
+   **Make changes to events**.
+4. In Vercel set `GOOGLE_SERVICE_ACCOUNT_EMAIL` to the file's `client_email`
+   and `GOOGLE_SERVICE_ACCOUNT_KEY` to its `private_key`, then redeploy. Set
+   `GOOGLE_CALENDAR_ID` only if the calendar isn't `hello@laundrogrid.com`'s
+   main one.
+
+If step 3 only offers "See only free/busy", the Workspace admin has limited
+external sharing: in the Admin console under **Apps → Google Workspace →
+Calendar → Sharing settings**, allow external sharing of all information.
+
+To check it works, open `/api/slots` on the deployed site, put a test meeting
+on the calendar inside office hours, and reload: that slot should be gone.
+Failures are logged with a `[calendar]` prefix in the Vercel function log.
+
+To block out time (holidays, a busy afternoon), just put an event on the
+calendar and leave it marked **Busy**.
+
+### Tracking bookings in Google Analytics
+
+Set `NEXT_PUBLIC_GA_ID` to the GA4 measurement ID and redeploy; with it empty
+no analytics script loads. A booking then shows up two ways:
+
+- **`generate_lead` event** (recommended). Sent by the confirmation page once
+  per booking, with a `booking_type` of `call` or `demo`. Mark it as a key
+  event in GA4 under **Admin → Events**. A refresh, a bookmark or a typed URL
+  does not send it again.
+- **Page view of `/confirmed`**. Works with no setup, but counts every view of
+  the page, reloads included.
+
+`/confirmed` is `noindex` and absent from the sitemap. No name, email or time
+is put in its URL — the booking summary travels in `sessionStorage`
+(`lib/booking-receipt.ts`) — because GA records URLs and forbids personal data
+in them.
 
 ---
 
@@ -196,13 +252,17 @@ change.
    | Variable | Value |
    |---|---|
    | `NEXT_PUBLIC_SITE_URL` | `https://laundrogrid.com` |
-   | `LEAD_WEBHOOK_URL` | Slack/Discord/Zapier webhook — **the form cannot capture leads without it** |
-   | `NEXT_PUBLIC_CAL_LINK` | e.g. `laundrogrid/15min` (optional) |
+   | `RESEND_API_KEY` | Resend API key — **bookings are not emailed without it** |
+   | `BOOKING_EMAIL_FROM` | Sender on the Resend-verified domain (optional) |
+   | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Service account for Google Calendar — **slots can double-book without it** |
+   | `GOOGLE_SERVICE_ACCOUNT_KEY` | That account's private key |
+   | `GOOGLE_CALENDAR_ID` | Calendar to use, if not `hello@laundrogrid.com` (optional) |
+   | `LEAD_WEBHOOK_URL` | Slack/Discord/Zapier webhook for a second copy (optional) |
+   | `NEXT_PUBLIC_GA_ID` | GA4 measurement ID, e.g. `G-XXXXXXXXXX` (optional) |
 
    `NEXT_PUBLIC_SITE_URL` feeds canonical URLs, Open Graph, the sitemap and
-   JSON-LD — a wrong value here quietly damages SEO. `NEXT_PUBLIC_CAL_LINK` is
-   safe to leave empty; the booking area renders a marked placeholder and the
-   contact form still works.
+   JSON-LD — a wrong value here quietly damages SEO. `NEXT_PUBLIC_GA_ID` is
+   read at build time, so redeploy after setting it.
 
 ### Pointing the domain — keeping Google Workspace email intact
 
@@ -254,9 +314,11 @@ records above.
 ## Before launch
 
 - [ ] Confirm the phone number in `lib/site.ts` (`phone` **and** `phoneHref` — same number, human and E.164 formats)
-- [ ] Set `NEXT_PUBLIC_CAL_LINK` to the real Cal.com handle
 - [ ] Confirm `hello@laundrogrid.com` in `lib/site.ts` is a real, monitored inbox
-- [ ] Set `LEAD_WEBHOOK_URL` and submit the form once end to end to confirm a lead arrives
+- [ ] Set `RESEND_API_KEY`, verify the domain in Resend, and book once end to end to confirm the email arrives
+- [ ] Connect Google Calendar (see above) and confirm a test meeting removes its slot from `/api/slots`
+- [ ] Confirm the booking hours in `lib/booking.ts`
+- [ ] Set `NEXT_PUBLIC_GA_ID` and mark `generate_lead` as a key event in GA4
 - [ ] Write the privacy policy and terms pages; the footer currently says
       "coming before launch" rather than linking to a 404
 - [ ] Re-run Lighthouse mobile on the deployed URL

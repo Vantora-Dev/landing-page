@@ -1,22 +1,25 @@
+import { bookingRules, bookingTypes, formatSlot, type Booking } from "./booking";
 import { site } from "./site";
 
 /**
- * Shapes a lead for whichever service `LEAD_WEBHOOK_URL` points at.
+ * Shapes a booking for whichever service `LEAD_WEBHOOK_URL` points at.
  *
  * This is separate from the route so it can be tested directly: a
  * Slack-shaped body posted to Discord is rejected outright, and a rejected
- * delivery is a lost enquiry, so the shaping is worth verifying without
+ * delivery is a lost booking, so the shaping is worth verifying without
  * standing up a server.
  */
 
-export type Lead = {
-  name: string;
-  email: string;
-  phone: string;
-  business: string;
-  location: string;
-  message: string;
-};
+export type Lead = Booking;
+
+function title(lead: Lead): string {
+  return `${bookingTypes[lead.type].label} booked — ${lead.business}`;
+}
+
+/** The slot as the team reads it, then as the visitor picked it. */
+function when(lead: Lead): string {
+  return `${formatSlot(lead.startsAt, bookingRules.timeZone)} (theirs: ${formatSlot(lead.startsAt, lead.timezone)})`;
+}
 
 /** Signal amber (#fbbf24) as the integer Discord expects for an embed colour. */
 const DISCORD_COLOUR = 0xfbbf24;
@@ -42,7 +45,8 @@ export function buildSummary(lead: Lead): string {
   const note = clamp(lead.message, 1200);
 
   return [
-    `New enquiry — ${lead.business}`,
+    title(lead),
+    when(lead),
     `${lead.name} · ${lead.location}`,
     `${lead.email} · ${lead.phone}`,
     note ? `\n"${note}"` : "",
@@ -58,6 +62,7 @@ export function buildSummary(lead: Lead): string {
  */
 export function discordPayload(lead: Lead) {
   const fields: Array<{ name: string; value: string; inline: boolean }> = [
+    { name: "When", value: clamp(when(lead), DISCORD_LIMITS.fieldValue), inline: false },
     { name: "Name", value: clamp(lead.name, DISCORD_LIMITS.fieldValue), inline: true },
     { name: "Phone", value: clamp(lead.phone, DISCORD_LIMITS.fieldValue), inline: true },
     { name: "Email", value: clamp(lead.email, DISCORD_LIMITS.fieldValue), inline: true },
@@ -80,8 +85,8 @@ export function discordPayload(lead: Lead) {
     username: site.name,
     embeds: [
       {
-        title: clamp(`New enquiry — ${lead.business}`, DISCORD_LIMITS.title),
-        description: `Call back on **${lead.phone}**`,
+        title: clamp(title(lead), DISCORD_LIMITS.title),
+        description: `Call them on **${lead.phone}**`,
         color: DISCORD_COLOUR,
         fields,
         footer: { text: site.domain },

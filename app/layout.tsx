@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@/components/ui/Analytics";
 import { geistMono, geistSans } from "@/lib/fonts";
 import { site } from "@/lib/site";
 import { jsonLd } from "@/lib/schema";
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           // Static, build-time constant — no user input reaches this string.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <Analytics />
       </body>
     </html>
   );
