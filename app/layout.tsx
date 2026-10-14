@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@/components/ui/Analytics";
-import { geistMono, geistSans } from "@/lib/fonts";
+import { displaySerif, geistMono, geistSans } from "@/lib/fonts";
 import { site } from "@/lib/site";
 import { jsonLd } from "@/lib/schema";
 import "./globals.css";
@@ -8,7 +8,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Recurring revenue systems for laundromats`,
+    default: `${site.name} | Digital growth for laundromats and launderettes`,
     template: `%s · ${site.name}`,
   },
   description: site.description,
@@ -21,6 +21,8 @@ export const metadata: Metadata = {
     "laundromat memberships",
     "laundromat customer database",
     "laundromat recurring revenue",
+    "launderette marketing",
+    "laundromat customer retention",
   ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
@@ -28,15 +30,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "en_GB",
+    alternateLocale: ["en_US"],
     url: site.url,
     siteName: site.name,
-    title: "Your laundromat has customers. It doesn't have a customer list.",
+    title: "We bring them in. We bring them back. | LaundroGrid",
     description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your laundromat has customers. It doesn't have a customer list.",
+    title: "We bring them in. We bring them back. | LaundroGrid",
     description: site.description,
   },
   robots: {
@@ -75,7 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       // (changed default in Next 16) so in-page anchors stay smooth
       // without hijacking route transitions.
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${displaySerif.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-paper text-graphite-900">
         <a

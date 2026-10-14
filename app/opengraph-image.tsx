@@ -6,7 +6,7 @@ import { ImageResponse } from "next/og";
  * gets rendered at.
  */
 export const alt =
-  "LaundroGrid — your laundromat has customers, it doesn't have a customer list.";
+  "LaundroGrid: we bring them in, we bring them back. Digital growth for laundromats and launderettes.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -92,7 +92,7 @@ export default function OpengraphImage() {
               letterSpacing: -1.8,
             }}
           >
-            Your laundromat has customers.
+            We bring them in.
           </div>
           <div
             style={{
@@ -102,7 +102,7 @@ export default function OpengraphImage() {
               letterSpacing: -1.8,
             }}
           >
-            It doesn&apos;t have a customer list.
+            We bring them back.
           </div>
           <div
             style={{
@@ -113,8 +113,8 @@ export default function OpengraphImage() {
               maxWidth: 700,
             }}
           >
-            We install and run the system that turns anonymous walk-ins into
-            members who pay every month.
+            We run the digital side of laundromats and launderettes, from
+            winning new customers to keeping them.
           </div>
         </div>
       </div>

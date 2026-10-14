@@ -15,10 +15,10 @@ type Status = "idle" | "submitting" | "error";
 
 const fields = [
   { name: "name", label: "Your name", type: "text", autoComplete: "name", required: true },
-  { name: "business", label: "Laundromat name", type: "text", autoComplete: "organization", required: true },
+  { name: "business", label: "Laundromat or launderette name", type: "text", autoComplete: "organization", required: true },
   { name: "email", label: "Email", type: "email", autoComplete: "email", required: true },
   { name: "phone", label: "Phone", type: "tel", autoComplete: "tel", required: true },
-  { name: "location", label: "City and state", type: "text", autoComplete: "address-level2", required: true },
+  { name: "location", label: "Town or city, and country", type: "text", autoComplete: "address-level2", required: true },
 ] as const;
 
 const inputClass =
@@ -249,8 +249,8 @@ export function BookingForm() {
         >
           {slotError ||
             (timezone
-              ? `Times are shown in your time zone (${timezone.replace(/_/g, " ")}). We keep UK office hours.`
-              : "Times are shown in your own time zone. We keep UK office hours.")}
+              ? `Times are shown in your time zone (${timezone.replace(/_/g, " ")}).`
+              : "Times are shown in your own time zone.")}
         </p>
       </div>
 
@@ -294,7 +294,7 @@ export function BookingForm() {
             name="message"
             rows={2}
             className={`mt-2 ${inputClass} resize-y`}
-            placeholder="Wash-and-fold, delivery, memberships — or where you're stuck."
+            placeholder="Wash-and-fold, delivery, memberships, or where you're stuck."
           />
         </div>
       </div>

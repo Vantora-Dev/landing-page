@@ -10,7 +10,7 @@ export function Faq() {
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
             <Reveal>
-              <SectionLabel>07 — Objections</SectionLabel>
+              <SectionLabel>07 / Objections</SectionLabel>
             </Reveal>
             <Reveal delay={0.06}>
               <h2 className="type-h2 mt-8 max-w-[12ch] text-graphite-900">
@@ -19,8 +19,7 @@ export function Faq() {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mt-8 max-w-[36ch] text-[0.9375rem] leading-relaxed text-graphite-600">
-                Answered the way we&rsquo;d answer them on the phone, including
-                the ones where the honest answer isn&rsquo;t the flattering one.
+                Answered the way we&rsquo;d answer them on the phone.
               </p>
             </Reveal>
           </div>

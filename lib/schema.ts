@@ -25,16 +25,20 @@ const organization = {
     contactType: "sales",
     telephone: site.phoneHref,
     email: site.email,
-    areaServed: "US",
+    areaServed: ["GB", "US"],
     availableLanguage: ["en"],
   },
-  areaServed: { "@type": "Country", name: "United States" },
+  areaServed: [
+    { "@type": "Country", name: "United Kingdom" },
+    { "@type": "Country", name: "United States" },
+  ],
   knowsAbout: [
     "Laundromat marketing",
     "Wash and fold ordering",
     "Laundry pickup and delivery",
     "Laundromat membership programs",
     "Customer relationship management for laundromats",
+    "Launderette marketing",
   ],
 };
 
@@ -44,22 +48,25 @@ const website = {
   url: site.url,
   name: site.name,
   publisher: { "@id": `${site.url}/#organization` },
-  inLanguage: "en-US",
+  inLanguage: "en",
 };
 
 const service = {
   "@type": "Service",
   "@id": `${site.url}/#service`,
-  name: "Digital revenue system for laundromats",
+  name: "Digital growth system for laundromats and launderettes",
   serviceType: "Laundromat digital operations and marketing",
   provider: { "@id": `${site.url}/#organization` },
-  areaServed: { "@type": "Country", name: "United States" },
+  areaServed: [
+    { "@type": "Country", name: "United Kingdom" },
+    { "@type": "Country", name: "United States" },
+  ],
   audience: {
     "@type": "BusinessAudience",
-    name: "Independent laundromat owners in the United States",
+    name: "Independent laundromat and launderette owners",
   },
   description:
-    "Website, online wash-and-fold ordering, pickup and delivery booking, monthly membership plans, a self-building customer database, SMS and email automation, Google Business Profile management and monthly reporting — installed and operated for the owner.",
+    "Website, Google Business Profile and review management, online wash-and-fold ordering, pickup and delivery booking, monthly membership plans, a self-building customer record, SMS and email automation and monthly reporting, installed and operated for the owner.",
 };
 
 const faqPage = {
