@@ -1,8 +1,9 @@
 # LaundroGrid — marketing site
 
-The marketing site for [laundrogrid.com](https://laundrogrid.com). A single page
-that sells one idea: a laundromat's customers are anonymous, and LaundroGrid
-turns anonymous walk-ins into known customers who pay every month.
+The marketing site for [laundrogrid.com](https://laundrogrid.com). The homepage
+sells one idea: LaundroGrid runs the digital side of a laundromat or launderette,
+bringing new customers in and bringing them back. Around it sit the guides
+(the keyword-led articles) and the privacy and terms pages.
 
 **This is a standalone repo on purpose.** It shares no types, no database and no
 deploy cadence with the platform. It has no backend beyond the booking endpoints.
@@ -44,6 +45,7 @@ JSX.
 | `lib/site.ts` | Name, URL, email, phone, LinkedIn, GA ID, nav |
 | `lib/booking.ts` | Bookable hours, call types, booking validation |
 | `lib/schema.ts` | JSON-LD, built from the files above |
+| `lib/guides.ts` | Guides (articles): topic hubs, keyword plan and every article |
 | `app/globals.css` | Colour tokens, type scale, motion easing |
 
 ### Rules for anything written into those files
@@ -137,6 +139,23 @@ Expect the brand name to rank within days of indexing, because nothing else
 competes for it. Competitive terms ("laundromat marketing", "wash and fold
 website") are a different problem that pages alone don't solve — they need
 content and links over months.
+
+## Guides
+
+Articles live in `lib/guides.ts` and render at `/guides/<slug>` with Article,
+BreadcrumbList and (when the guide has questions) FAQPage JSON-LD. A guide only
+exists once `published: true`: until then it isn't built, isn't in the
+sitemap, and while no guide is published `/guides` returns 404 and the "Guides"
+nav link stays hidden. That keeps empty or thin pages away from Google.
+
+Each guide owns exactly one primary keyword from its hub's list. Never point
+two guides, or a guide and the homepage, at the same keyword.
+
+## Legal pages
+
+`/privacy` and `/terms` are drafts written from what the site actually does.
+Have them reviewed by a lawyer before launch, and update `/privacy` in the
+same commit as any change to what the site collects.
 
 ## Booking and the confirmation page
 

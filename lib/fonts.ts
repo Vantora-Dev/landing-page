@@ -26,3 +26,30 @@ export const geistMono = localFont({
   preload: false,
   fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
 });
+
+/**
+ * Instrument Serif carries the large headlines (h1 and section h2s) only.
+ * Geist stays on everything else. A serif at display size is what moves the
+ * page from "default Next.js startup" to something that looks considered,
+ * and it's cheap: one weight, upright plus italic, latin subset.
+ *
+ * The italic is used for the turn in the hero ("We bring them back.").
+ */
+export const displaySerif = localFont({
+  src: [
+    {
+      path: "../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2",
+      weight: "400",
+      style: "italic",
+    },
+  ],
+  variable: "--font-instrument-serif",
+  display: "swap",
+  preload: true,
+  fallback: ["Georgia", "Times New Roman", "serif"],
+});

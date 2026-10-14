@@ -70,7 +70,7 @@ export function FinalCta() {
             {/* The fastest path, given top billing. */}
             <Reveal delay={0.08}>
               <div className="rounded-lg border border-ink-700 bg-white/[0.02] p-6 md:p-8">
-                <p className="type-label text-graphite-400">Fastest — call us</p>
+                <p className="type-label text-graphite-400">Fastest: call us</p>
                 <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
                   <CallButton />
                   <a

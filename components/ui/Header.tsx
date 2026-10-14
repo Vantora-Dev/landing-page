@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CTA_HREF, CTA_PRIMARY, nav, site } from "@/lib/site";
+import { CTA_HREF, CTA_PRIMARY, guidesNavItem, nav, site } from "@/lib/site";
 
 /**
  * Transparent over the dark hero, solid once the page starts scrolling.
@@ -10,8 +10,17 @@ import { CTA_HREF, CTA_PRIMARY, nav, site } from "@/lib/site";
  * and the single call-to-action remain, which is the only thing that matters
  * on this page anyway.
  */
-export function Header() {
-  const [scrolled, setScrolled] = useState(false);
+type HeaderProps = {
+  /** Start solid. For pages with no dark hero behind the header. */
+  solid?: boolean;
+  /** Passed from the server so guide content never ships in this bundle. */
+  showGuides?: boolean;
+};
+
+export function Header({ solid = false, showGuides = false }: HeaderProps) {
+  const [scrolledState, setScrolled] = useState(false);
+  const scrolled = solid || scrolledState;
+  const items = showGuides ? [...nav, guidesNavItem] : nav;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -32,7 +41,7 @@ export function Header() {
     >
       <div className="shell flex h-[4.5rem] items-center justify-between gap-6">
         <a
-          href="#top"
+          href="/"
           className={`type-label !text-[0.8125rem] !tracking-[0.14em] font-medium transition-colors ${
             scrolled ? "text-graphite-900" : "text-paper"
           }`}
@@ -42,7 +51,7 @@ export function Header() {
 
         <nav aria-label="Sections" className="hidden lg:block">
           <ul className="flex items-center gap-8">
-            {nav.map((item) => (
+            {items.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}

@@ -50,24 +50,43 @@ export const site = {
    * and a crawler that learns your lastmod is meaningless starts ignoring it.
    * Bump this when the copy actually changes.
    */
-  contentUpdatedAt: "2026-09-21",
+  contentUpdatedAt: "2026-10-14",
 
-  tagline: "Digital revenue systems for US laundromats",
+  /** Last change to /privacy or /terms. Shown on both pages and in the sitemap. */
+  legalUpdatedAt: "2026-10-14",
+
+  /** The registered business behind the site, as named on the legal pages. */
+  legalEntity: "Laundrogrid",
+  legalAddress: "2, Street 84, G-6/4, Islamabad 44000, Pakistan",
+
+  tagline: "Digital growth for laundromats and launderettes",
   description:
-    "LaundroGrid installs and operates the digital revenue system for independent US laundromats — website, online wash-and-fold ordering, pickup and delivery, memberships, customer database and marketing automation. You keep running the store.",
+    "LaundroGrid runs the digital side of independent laundromats and launderettes: website, Google listing and reviews to win new customers, plus online wash-and-fold ordering, pickup and delivery, memberships and automated follow-ups to keep them coming back. You keep running the store.",
 } as const;
 
+/**
+ * Rooted at "/" so the same links work from /guides and the legal pages. On
+ * the homepage a browser treats "/#system" as an in-page jump, no reload.
+ */
 export const nav = [
-  { label: "The problem", href: "#problem" },
-  { label: "What we install", href: "#system" },
-  { label: "Revenue", href: "#revenue" },
-  { label: "How it works", href: "#process" },
-  { label: "What it costs", href: "#cost" },
-  { label: "FAQ", href: "#faq" },
+  { label: "The problem", href: "/#problem" },
+  { label: "What we run", href: "/#system" },
+  { label: "Revenue", href: "/#revenue" },
+  { label: "How it works", href: "/#process" },
+  { label: "What it costs", href: "/#cost" },
+  { label: "FAQ", href: "/#faq" },
+] as const;
+
+/** Shown in the header and footer only once a guide is published. */
+export const guidesNavItem = { label: "Guides", href: "/guides" } as const;
+
+export const legalNav = [
+  { label: "Privacy policy", href: "/privacy" },
+  { label: "Terms of use", href: "/terms" },
 ] as const;
 
 export const CTA_PRIMARY = "Book a 15-minute call";
-export const CTA_HREF = "#book";
+export const CTA_HREF = "/#book";
 
 /** Where a successful booking lands. Analytics counts a view of it as a lead. */
 export const CONFIRMED_PATH = "/confirmed";

@@ -22,10 +22,10 @@ export function Hero() {
           {hero.eyebrow}
         </p>
 
-        {/* Two deliberate lines: the setup in grey, the turn in white. */}
+        {/* Two deliberate lines: the setup in grey, the turn in white italic. */}
         <h1 className="type-display mt-7 max-w-[22ch] md:mt-8 md:max-w-none">
           <span className="block text-graphite-400">{hero.headline[0]}</span>
-          <span className="block text-paper">{hero.headline[1]}</span>
+          <span className="block italic text-paper">{hero.headline[1]}</span>
         </h1>
 
         <p className="type-lead mt-7 max-w-[42ch] text-graphite-400 md:mt-8 md:max-w-[50ch]">

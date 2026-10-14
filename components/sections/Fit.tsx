@@ -32,7 +32,7 @@ export function Fit() {
               className="flex h-full flex-col rounded-lg border border-line bg-white p-7 md:p-9"
             >
               <p className="type-label text-signal-deep">
-                If — {path.condition}
+                If: {path.condition}
               </p>
               <h3 className="type-h3 mt-6 max-w-[20ch] text-graphite-900">
                 {path.title}

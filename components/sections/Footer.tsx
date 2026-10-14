@@ -1,6 +1,7 @@
-import { nav, site } from "@/lib/site";
+import { guidesNavItem, legalNav, nav, site } from "@/lib/site";
 
-export function Footer() {
+export function Footer({ showGuides = false }: { showGuides?: boolean }) {
+  const items = showGuides ? [...nav, guidesNavItem] : nav;
   return (
     <footer className="on-dark border-t border-ink-700 bg-ink-950">
       <div className="shell py-14">
@@ -10,8 +11,8 @@ export function Footer() {
               {site.name}
             </p>
             <p className="mt-5 max-w-[38ch] text-[0.9375rem] leading-relaxed text-graphite-400">
-              {site.name} installs and operates digital revenue systems for
-              independent laundromats in the United States.
+              {site.name} runs the digital side of independent laundromats and
+              launderettes, from winning new customers to keeping them.
             </p>
             <div className="mt-6 flex flex-col gap-2">
               <a
@@ -50,9 +51,9 @@ export function Footer() {
           </div>
 
           <div className="md:col-span-4">
-            <h2 className="type-label text-graphite-400">On this page</h2>
+            <h2 className="type-label text-graphite-400">Explore</h2>
             <ul className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3">
-              {nav.map((item) => (
+              {items.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
@@ -67,11 +68,17 @@ export function Footer() {
 
           <div className="md:col-span-3">
             <h2 className="type-label text-graphite-400">Legal</h2>
-            {/* TODO(launch): write these two pages and link them properly.
-                Left visible-but-inert rather than linking to a 404. */}
-            <ul className="mt-5 space-y-3 text-[0.9375rem] text-graphite-400">
-              <li>Privacy policy — coming before launch</li>
-              <li>Terms of service — coming before launch</li>
+            <ul className="mt-5 space-y-3">
+              {legalNav.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="text-[0.9375rem] text-graphite-400 transition-colors hover:text-paper"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

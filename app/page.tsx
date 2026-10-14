@@ -10,11 +10,13 @@ import { Streams } from "@/components/sections/Streams";
 import { System } from "@/components/sections/System";
 import { Header } from "@/components/ui/Header";
 import { MotionProvider } from "@/components/ui/MotionProvider";
+import { hasPublishedGuides } from "@/lib/guides";
 
 export default function Page() {
+  const showGuides = hasPublishedGuides();
   return (
     <MotionProvider>
-      <Header />
+      <Header showGuides={showGuides} />
       <main id="main" className="flex-1">
         <Hero />
         <Problem />
@@ -26,7 +28,7 @@ export default function Page() {
         <Faq />
         <FinalCta />
       </main>
-      <Footer />
+      <Footer showGuides={showGuides} />
     </MotionProvider>
   );
 }

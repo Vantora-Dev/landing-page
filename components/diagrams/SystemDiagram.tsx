@@ -41,8 +41,8 @@ export function SystemDiagram() {
         How the LaundroGrid system is connected
       </title>
       <desc id="system-diagram-desc">
-        Four customer channels — the website, wash-and-fold ordering, pickup and
-        delivery, and memberships — all write into a single customer record.
+        Four customer channels (the website, wash-and-fold ordering, pickup and
+        delivery, and memberships) all write into a single customer record.
         Marketing automation, Google Business Profile management and the owner
         dashboard all read back out of that same record.
       </desc>
@@ -149,7 +149,7 @@ export function SystemDiagram() {
         fill="#a1a1aa"
         fontFamily="var(--font-sans), sans-serif"
       >
-        Name, contact details, every order, every membership — one place, yours.
+        Name, contact details, every order, every membership. One place, yours.
       </text>
 
       <text
