@@ -1,15 +1,15 @@
 import type { MetadataRoute } from "next";
-import { publishedGuides } from "@/lib/guides";
+import { publishedPosts } from "@/lib/blog";
 import { site } from "@/lib/site";
 
 /**
- * The homepage, the legal pages, and every published guide. Unpublished
- * guides never appear here, and /guides itself only appears once it has
+ * The homepage, the legal pages, and every published post. Unpublished
+ * posts never appear here, and /blog itself only appears once it has
  * something in it.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const guides = publishedGuides();
-  const latestGuide = guides[0]?.dateUpdated;
+  const posts = publishedPosts();
+  const latestPost = posts[0]?.dateUpdated;
 
   return [
     {
@@ -18,19 +18,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
-    ...(guides.length
+    ...(posts.length
       ? [
           {
-            url: `${site.url}/guides`,
-            lastModified: new Date(latestGuide),
+            url: `${site.url}/blog`,
+            lastModified: new Date(latestPost),
             changeFrequency: "weekly" as const,
             priority: 0.8,
           },
         ]
       : []),
-    ...guides.map((guide) => ({
-      url: `${site.url}/guides/${guide.slug}`,
-      lastModified: new Date(guide.dateUpdated),
+    ...posts.map((post) => ({
+      url: `${site.url}/blog/${post.slug}`,
+      lastModified: new Date(post.dateUpdated),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),

@@ -27,8 +27,8 @@ export const site = {
    * links. Keep the two in sync — they are the same number, formatted for a
    * human and for a dialler respectively.
    */
-  phone: "+92 333 0500600",
-  phoneHref: "+923330500600",
+  phone: "+44 800 820 3356",
+  phoneHref: "+448008203356",
 
   /**
    * Public profiles. Listed in JSON-LD `sameAs`, which is how Google ties this
@@ -50,7 +50,7 @@ export const site = {
    * and a crawler that learns your lastmod is meaningless starts ignoring it.
    * Bump this when the copy actually changes.
    */
-  contentUpdatedAt: "2026-10-14",
+  contentUpdatedAt: "2026-10-15",
 
   /** Last change to /privacy or /terms. Shown on both pages and in the sitemap. */
   legalUpdatedAt: "2026-10-14",
@@ -65,7 +65,7 @@ export const site = {
 } as const;
 
 /**
- * Rooted at "/" so the same links work from /guides and the legal pages. On
+ * Rooted at "/" so the same links work from /blog and the legal pages. On
  * the homepage a browser treats "/#system" as an in-page jump, no reload.
  */
 export const nav = [
@@ -77,8 +77,8 @@ export const nav = [
   { label: "FAQ", href: "/#faq" },
 ] as const;
 
-/** Shown in the header and footer only once a guide is published. */
-export const guidesNavItem = { label: "Guides", href: "/guides" } as const;
+/** Shown in the header and footer only once a post is published. */
+export const blogNavItem = { label: "Blog", href: "/blog" } as const;
 
 export const legalNav = [
   { label: "Privacy policy", href: "/privacy" },

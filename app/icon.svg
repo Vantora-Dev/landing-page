@@ -1,16 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LaundroGrid">
-  <rect width="64" height="64" rx="13" fill="#08080a"/>
-  <g fill="#3f3f46">
-    <rect x="43.00" y="7.36"  width="13.63" height="13.63" rx="2.45"/>
-    <rect x="25.18" y="25.18" width="13.63" height="13.63" rx="2.45"/>
-    <rect x="43.00" y="25.18" width="13.63" height="13.63" rx="2.45"/>
-    <rect x="7.36"  y="43.00" width="13.63" height="13.63" rx="2.45"/>
-    <rect x="25.18" y="43.00" width="13.63" height="13.63" rx="2.45"/>
-    <rect x="43.00" y="43.00" width="13.63" height="13.63" rx="2.45"/>
-  </g>
-  <g fill="#fbbf24">
-    <rect x="7.36"  y="7.36"  width="13.63" height="13.63" rx="2.45"/>
-    <rect x="25.18" y="7.36"  width="13.63" height="13.63" rx="2.45"/>
-    <rect x="7.36"  y="25.18" width="13.63" height="13.63" rx="2.45"/>
+  <rect width="64" height="64" rx="13" fill="#ffffff"/>
+  <defs>
+    <linearGradient id="m" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="96" y2="104">
+      <stop offset="0" stop-color="#5c1480"/>
+      <stop offset="0.55" stop-color="#6d1384"/>
+      <stop offset="1" stop-color="#d13a62"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(11.69 10.00) scale(0.42308)">
+    <path fill="url(#m)" d="M0 15.7A3 3 0 0 1 3 12.7H13A3 3 0 0 1 16 15.7V78A10 10 0 0 0 26 88H74A6 6 0 0 0 80 82V62A3 3 0 0 0 77 59H56A3 3 0 0 1 53 56V46A3 3 0 0 1 56 43H86A10 10 0 0 1 96 53V84A20 20 0 0 1 76 104H26A26 26 0 0 1 0 78Z"/>
+    <rect fill="url(#m)" x="24" y="12.7" width="15" height="66" rx="3"/>
+    <g fill="#fe6700"><rect x="84" y="0" width="11" height="11" rx="1.6"/><rect x="69" y="10.5" width="11" height="11" rx="1.6"/><rect x="84" y="21" width="11" height="11" rx="1.6"/><rect x="53" y="24" width="11" height="11" rx="1.6"/></g>
   </g>
 </svg>

@@ -19,7 +19,7 @@ export const faq: FaqItem[] = [
     a: "Then don't start there. Wash-and-fold and delivery need people, and anyone who says software removes that is selling you something. We start with your website, Google listing and reviews, then help you get to wash-and-fold in stages: the hours, what to charge, who to hire and when the volume justifies it.",
   },
   {
-    q: "Do you work outside the US?",
+    q: "Which countries do you work in?",
     a: "Yes. We work with independent laundromats and launderettes in the UK and the US first, and anywhere our ordering, payment and delivery partners operate. On the call we'll tell you straight whether your area is covered.",
   },
   {
