@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { LOGO_HEIGHT, LOGO_WIDTH, logoSvg } from "@/lib/logo";
 
 /**
  * Generated at build time. Deliberately typographic — the same restraint as
@@ -69,18 +70,12 @@ export default function OpengraphImage() {
         </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ width: 34, height: 3, background: "#fbbf24" }} />
-          <div
-            style={{
-              marginLeft: 18,
-              color: "#a1a1aa",
-              fontSize: 22,
-              letterSpacing: 3,
-              textTransform: "uppercase",
-            }}
-          >
-            LaundroGrid
-          </div>
+          <img
+            src={`data:image/svg+xml,${encodeURIComponent(logoSvg("dark"))}`}
+            alt=""
+            width={Math.round((56 * LOGO_WIDTH) / LOGO_HEIGHT)}
+            height={56}
+          />
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 950 }}>

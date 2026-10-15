@@ -47,6 +47,7 @@ JSX.
 | `lib/schema.ts` | JSON-LD, built from the files above |
 | `lib/blog.ts` | Blog posts: topic hubs, keyword plan and every article |
 | `app/globals.css` | Colour tokens, type scale, motion easing |
+| `lib/logo.ts` | The letterhead logo as vectors: mark, wordmark, colours. `app/icon.svg`, `favicon.ico` and `apple-icon.png` are rendered from it, so re-render them if it changes |
 
 ### Rules for anything written into those files
 

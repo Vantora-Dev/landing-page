@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CTA_HREF, CTA_PRIMARY, blogNavItem, nav, site } from "@/lib/site";
+import { CTA_HREF, CTA_PRIMARY, blogNavItem, nav } from "@/lib/site";
+import { Logo } from "./Logo";
 
 /**
  * Transparent over the dark hero, solid once the page starts scrolling.
@@ -40,13 +41,8 @@ export function Header({ solid = false, showBlog = false }: HeaderProps) {
       }`}
     >
       <div className="shell flex h-[4.5rem] items-center justify-between gap-6">
-        <a
-          href="/"
-          className={`type-label !text-[0.8125rem] !tracking-[0.14em] font-medium transition-colors ${
-            scrolled ? "text-graphite-900" : "text-paper"
-          }`}
-        >
-          {site.name}
+        <a href="/" className="shrink-0">
+          <Logo tone={scrolled ? "light" : "dark"} className="h-8" />
         </a>
 
         <nav aria-label="Sections" className="hidden lg:block">
