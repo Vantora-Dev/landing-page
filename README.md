@@ -333,7 +333,7 @@ records above.
 
 ## Before launch
 
-- [ ] Confirm the phone number in `lib/site.ts` (`phone` **and** `phoneHref` — same number, human and E.164 formats)
+- [x] Confirm the phone number in `lib/site.ts` (`phone` **and** `phoneHref` — same number, human and E.164 formats)
 - [ ] Confirm `hello@laundrogrid.com` in `lib/site.ts` is a real, monitored inbox
 - [ ] Set `RESEND_API_KEY`, verify the domain in Resend, and book once end to end to confirm the email arrives
 - [ ] Connect Google Calendar (see above) and confirm a test meeting removes its slot from `/api/slots`

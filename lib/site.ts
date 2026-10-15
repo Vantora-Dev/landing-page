@@ -27,8 +27,8 @@ export const site = {
    * links. Keep the two in sync — they are the same number, formatted for a
    * human and for a dialler respectively.
    */
-  phone: "+92 333 0500600",
-  phoneHref: "+923330500600",
+  phone: "+44 800 820 3356",
+  phoneHref: "+448008203356",
 
   /**
    * Public profiles. Listed in JSON-LD `sameAs`, which is how Google ties this
