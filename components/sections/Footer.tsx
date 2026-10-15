@@ -1,7 +1,7 @@
-import { guidesNavItem, legalNav, nav, site } from "@/lib/site";
+import { blogNavItem, legalNav, nav, site } from "@/lib/site";
 
-export function Footer({ showGuides = false }: { showGuides?: boolean }) {
-  const items = showGuides ? [...nav, guidesNavItem] : nav;
+export function Footer({ showBlog = false }: { showBlog?: boolean }) {
+  const items = showBlog ? [...nav, blogNavItem] : nav;
   return (
     <footer className="on-dark border-t border-ink-700 bg-ink-950">
       <div className="shell py-14">

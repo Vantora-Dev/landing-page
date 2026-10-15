@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalPage, type LegalSection } from "@/components/guides/LegalPage";
+import { LegalPage, type LegalSection } from "@/components/subpage/LegalPage";
 import { site } from "@/lib/site";
 
 /**

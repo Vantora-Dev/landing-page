@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 import { Footer } from "@/components/sections/Footer";
 import { Button } from "@/components/ui/Button";
 import { Header } from "@/components/ui/Header";
-import { hasPublishedGuides } from "@/lib/guides";
+import { hasPublishedPosts } from "@/lib/blog";
 import { CTA_HREF, CTA_PRIMARY } from "@/lib/site";
 
 /**
- * Layout for every page that isn't the homepage: guides and legal pages.
+ * Layout for every page that isn't the homepage: posts and legal pages.
  * The header starts solid because there's no dark hero behind it.
  */
 export function SubpageShell({
@@ -17,10 +17,10 @@ export function SubpageShell({
   /** The closing "book a call" band. Off for legal pages. */
   cta?: boolean;
 }) {
-  const showGuides = hasPublishedGuides();
+  const showBlog = hasPublishedPosts();
   return (
     <>
-      <Header solid showGuides={showGuides} />
+      <Header solid showBlog={showBlog} />
       <main id="main" className="flex-1 bg-paper pt-[4.5rem]">
         {children}
         {cta ? (
@@ -40,12 +40,12 @@ export function SubpageShell({
           </section>
         ) : null}
       </main>
-      <Footer showGuides={showGuides} />
+      <Footer showBlog={showBlog} />
     </>
   );
 }
 
-/** "Home / Guides / …" trail. The JSON-LD version is built separately. */
+/** "Home / Blog / …" trail. The JSON-LD version is built separately. */
 export function Breadcrumbs({ trail }: { trail: { label: string; href?: string }[] }) {
   return (
     <nav aria-label="Breadcrumb" className="type-label text-graphite-600">

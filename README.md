@@ -2,7 +2,7 @@
 
 The marketing site for [laundrogrid.com](https://laundrogrid.com). The homepage
 sells one idea: LaundroGrid runs the digital side of a laundromat or launderette,
-bringing new customers in and bringing them back. Around it sit the guides
+bringing new customers in and bringing them back. Around it sit the blog
 (the keyword-led articles) and the privacy and terms pages.
 
 **This is a standalone repo on purpose.** It shares no types, no database and no
@@ -45,7 +45,7 @@ JSX.
 | `lib/site.ts` | Name, URL, email, phone, LinkedIn, GA ID, nav |
 | `lib/booking.ts` | Bookable hours, call types, booking validation |
 | `lib/schema.ts` | JSON-LD, built from the files above |
-| `lib/guides.ts` | Guides (articles): topic hubs, keyword plan and every article |
+| `lib/blog.ts` | Blog posts: topic hubs, keyword plan and every article |
 | `app/globals.css` | Colour tokens, type scale, motion easing |
 
 ### Rules for anything written into those files
@@ -140,16 +140,16 @@ competes for it. Competitive terms ("laundromat marketing", "wash and fold
 website") are a different problem that pages alone don't solve — they need
 content and links over months.
 
-## Guides
+## Blog
 
-Articles live in `lib/guides.ts` and render at `/guides/<slug>` with Article,
-BreadcrumbList and (when the guide has questions) FAQPage JSON-LD. A guide only
+Articles live in `lib/blog.ts` and render at `/blog/<slug>` with Article,
+BreadcrumbList and (when the post has questions) FAQPage JSON-LD. A post only
 exists once `published: true`: until then it isn't built, isn't in the
-sitemap, and while no guide is published `/guides` returns 404 and the "Guides"
+sitemap, and while no post is published `/blog` returns 404 and the "Blog"
 nav link stays hidden. That keeps empty or thin pages away from Google.
 
-Each guide owns exactly one primary keyword from its hub's list. Never point
-two guides, or a guide and the homepage, at the same keyword.
+Each post owns exactly one primary keyword from its hub's list. Never point
+two posts, or a post and the homepage, at the same keyword.
 
 ## Legal pages
 

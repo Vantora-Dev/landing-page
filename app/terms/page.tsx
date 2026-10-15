@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalPage, type LegalSection } from "@/components/guides/LegalPage";
+import { LegalPage, type LegalSection } from "@/components/subpage/LegalPage";
 import { site } from "@/lib/site";
 
 /**
@@ -26,7 +26,7 @@ const sections: LegalSection[] = [
   {
     heading: "What's on the site",
     paragraphs: [
-      "The site and our guides describe our services and offer general information about running a laundromat or launderette. It's not financial, legal or tax advice, and it isn't tailored to your store. Check anything important with a qualified adviser before you act on it.",
+      "The site and our articles describe our services and offer general information about running a laundromat or launderette. It's not financial, legal or tax advice, and it isn't tailored to your store. Check anything important with a qualified adviser before you act on it.",
       "We try to keep everything accurate and current, but we don't promise that it always will be, and we may change or remove content at any time.",
     ],
   },
@@ -40,7 +40,7 @@ const sections: LegalSection[] = [
   {
     heading: "Our content",
     paragraphs: [
-      `The text, design, graphics and code on this site belong to ${site.name} or the people who licensed them to us. You're welcome to read, share links to and quote short parts of our guides with credit. Please don't copy the site, or large parts of it, without asking us first.`,
+      `The text, design, graphics and code on this site belong to ${site.name} or the people who licensed them to us. You're welcome to read, share links to and quote short parts of our articles with credit. Please don't copy the site, or large parts of it, without asking us first.`,
     ],
   },
   {
@@ -80,7 +80,7 @@ export default function TermsPage() {
   return (
     <LegalPage
       title="Terms of use"
-      intro={`The short version: use the site in good faith, treat our guides as general information, and know that our services are governed by a signed contract, not by this page.`}
+      intro={`The short version: use the site in good faith, treat our articles as general information, and know that our services are governed by a signed contract, not by this page.`}
       sections={sections}
     />
   );

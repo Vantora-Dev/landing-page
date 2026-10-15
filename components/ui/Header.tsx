@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CTA_HREF, CTA_PRIMARY, guidesNavItem, nav, site } from "@/lib/site";
+import { CTA_HREF, CTA_PRIMARY, blogNavItem, nav, site } from "@/lib/site";
 
 /**
  * Transparent over the dark hero, solid once the page starts scrolling.
@@ -13,14 +13,14 @@ import { CTA_HREF, CTA_PRIMARY, guidesNavItem, nav, site } from "@/lib/site";
 type HeaderProps = {
   /** Start solid. For pages with no dark hero behind the header. */
   solid?: boolean;
-  /** Passed from the server so guide content never ships in this bundle. */
-  showGuides?: boolean;
+  /** Passed from the server so post content never ships in this bundle. */
+  showBlog?: boolean;
 };
 
-export function Header({ solid = false, showGuides = false }: HeaderProps) {
+export function Header({ solid = false, showBlog = false }: HeaderProps) {
   const [scrolledState, setScrolled] = useState(false);
   const scrolled = solid || scrolledState;
-  const items = showGuides ? [...nav, guidesNavItem] : nav;
+  const items = showBlog ? [...nav, blogNavItem] : nav;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);

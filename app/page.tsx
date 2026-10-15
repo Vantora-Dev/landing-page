@@ -10,13 +10,13 @@ import { Streams } from "@/components/sections/Streams";
 import { System } from "@/components/sections/System";
 import { Header } from "@/components/ui/Header";
 import { MotionProvider } from "@/components/ui/MotionProvider";
-import { hasPublishedGuides } from "@/lib/guides";
+import { hasPublishedPosts } from "@/lib/blog";
 
 export default function Page() {
-  const showGuides = hasPublishedGuides();
+  const showBlog = hasPublishedPosts();
   return (
     <MotionProvider>
-      <Header showGuides={showGuides} />
+      <Header showBlog={showBlog} />
       <main id="main" className="flex-1">
         <Hero />
         <Problem />
@@ -28,7 +28,7 @@ export default function Page() {
         <Faq />
         <FinalCta />
       </main>
-      <Footer showGuides={showGuides} />
+      <Footer showBlog={showBlog} />
     </MotionProvider>
   );
 }
