@@ -60,12 +60,12 @@ export const system = {
     {
       key: "ordering",
       name: "Online wash-and-fold ordering",
-      body: "Customers order and pay from their phone, on your pricing, turnaround and service area.",
+      body: "Customers order from their phone and pay online or on collection, on your pricing, turnaround and service area.",
     },
     {
       key: "delivery",
       name: "Pickup and delivery booking",
-      body: "Time-window booking for the routes you actually run, with addresses, access notes and repeat schedules handled in the booking.",
+      body: "Time-window booking for the routes you actually run, with addresses and access notes handled in the booking.",
     },
     {
       key: "memberships",
@@ -82,12 +82,12 @@ export const system = {
     {
       key: "automation",
       name: "Automated texts and email",
-      body: "Order-ready alerts, win-back messages for regulars who've gone quiet, and review requests after a good visit, in your store's voice.",
+      body: "Order-ready alerts and review requests after every completed order, in your store's voice.",
     },
     {
       key: "google",
       name: "Google listing and reviews",
-      body: "Hours, photos and services kept current. Review requests going out steadily, and every review answered.",
+      body: "Hours, photos and services kept current. Review requests going out steadily, and a reply drafted for every review.",
     },
     {
       key: "dashboard",
