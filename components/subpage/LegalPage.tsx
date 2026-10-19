@@ -1,4 +1,4 @@
-import { Breadcrumbs, SubpageShell } from "@/components/guides/SubpageShell";
+import { Breadcrumbs, SubpageShell } from "@/components/subpage/SubpageShell";
 import { site } from "@/lib/site";
 
 export type LegalSection = { heading: string; paragraphs: string[] };

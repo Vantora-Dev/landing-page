@@ -1,15 +1,14 @@
-import { guidesNavItem, legalNav, nav, site } from "@/lib/site";
+import { Logo } from "@/components/ui/Logo";
+import { blogNavItem, legalNav, nav, site } from "@/lib/site";
 
-export function Footer({ showGuides = false }: { showGuides?: boolean }) {
-  const items = showGuides ? [...nav, guidesNavItem] : nav;
+export function Footer({ showBlog = false }: { showBlog?: boolean }) {
+  const items = showBlog ? [...nav, blogNavItem] : nav;
   return (
     <footer className="on-dark border-t border-ink-700 bg-ink-950">
       <div className="shell py-14">
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
-            <p className="type-label !text-[0.8125rem] !tracking-[0.14em] font-medium text-paper">
-              {site.name}
-            </p>
+            <Logo tone="dark" className="h-9" />
             <p className="mt-5 max-w-[38ch] text-[0.9375rem] leading-relaxed text-graphite-400">
               {site.name} runs the digital side of independent laundromats and
               launderettes, from winning new customers to keeping them.
@@ -26,6 +25,13 @@ export function Footer({ showGuides = false }: { showGuides?: boolean }) {
                 className="text-[0.9375rem] text-paper underline underline-offset-4 hover:text-signal"
               >
                 {site.phone}
+              </a>
+              <a
+                href={`tel:${site.landlineHref}`}
+                className="text-[0.9375rem] text-paper underline underline-offset-4 hover:text-signal"
+              >
+                {site.landline}
+                <span className="text-graphite-400"> (landline)</span>
               </a>
             </div>
 

@@ -250,7 +250,7 @@ export function validateBooking(payload: unknown, now: number = Date.now()): Val
     fieldErrors.business = "That name is too long.";
   }
 
-  if (data.location.length < 2) fieldErrors.location = "City and state, roughly.";
+  if (data.location.length < 2) fieldErrors.location = "Town or city, and country.";
   else if (data.location.length > 120) fieldErrors.location = "That's too long.";
 
   // Required, because the booking is a phone call. Deliberately loose: it
