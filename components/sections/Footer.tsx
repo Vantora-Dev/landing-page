@@ -26,6 +26,13 @@ export function Footer({ showBlog = false }: { showBlog?: boolean }) {
               >
                 {site.phone}
               </a>
+              <a
+                href={`tel:${site.landlineHref}`}
+                className="text-[0.9375rem] text-paper underline underline-offset-4 hover:text-signal"
+              >
+                {site.landline}
+                <span className="text-graphite-400"> (landline)</span>
+              </a>
             </div>
 
             <a

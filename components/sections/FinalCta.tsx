@@ -80,6 +80,15 @@ export function FinalCta() {
                     Or email {site.email}
                   </a>
                 </div>
+                <p className="mt-4 text-[0.9375rem] text-graphite-400">
+                  Landline:{" "}
+                  <a
+                    href={`tel:${site.landlineHref}`}
+                    className="underline underline-offset-4 transition-colors hover:text-paper"
+                  >
+                    {site.landline}
+                  </a>
+                </p>
               </div>
             </Reveal>
 

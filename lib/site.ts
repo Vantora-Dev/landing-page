@@ -31,6 +31,13 @@ export const site = {
   phoneHref: "+448008203356",
 
   /**
+   * A London landline alongside the CloudTalk freephone, for callers whose
+   * network won't route a UK 0800. Same display/E.164 pairing as `phone`.
+   */
+  landline: "+44 20 4578 1508",
+  landlineHref: "+442045781508",
+
+  /**
    * Public profiles. Listed in JSON-LD `sameAs`, which is how Google ties this
    * site and that profile to the same organisation — so the URL must match the
    * canonical one exactly, trailing slash included.
